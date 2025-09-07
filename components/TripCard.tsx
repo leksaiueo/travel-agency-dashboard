@@ -13,7 +13,7 @@ const TripCard = ({
   imageUrl,
   tags,
   price,
-}: TrialCardProps) => {
+}: TripCardProps) => {
   const path = useLocation();
 
   return (
@@ -26,6 +26,7 @@ const TripCard = ({
       className="trip-card"
     >
       <img src={imageUrl} alt={name} />
+
       <article>
         <h2>{name}</h2>
         <figure>
@@ -60,5 +61,4 @@ const TripCard = ({
     </Link>
   );
 };
-
 export default TripCard;

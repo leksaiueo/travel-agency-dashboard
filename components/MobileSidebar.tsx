@@ -20,7 +20,7 @@ const MobileSidebar = () => {
             alt="Logo"
             className="size-[30px]"
           />
-          <h1>Ngetour</h1>
+          <h1>ngeTrip</h1>
         </Link>
         <button onClick={toggleSidebar}>
           <img src="/assets/icons/menu.svg" alt="menu" className="size-7" />

@@ -1,9 +1,15 @@
 import { dashboardStats, user, allTrips } from "~/constants";
 import { Header, TripCard, StatsCard } from "../../../components";
+import { getUser } from "~/appwrite/auth";
+import type { Route } from "./+types/dashboard";
 const { totalUsers, usersJoined, totalTrips, tripsCreated, userRole } =
   dashboardStats;
 
-const dashboard = () => {
+export const clientLoader = async () => await getUser();
+
+const dashboard = ({ loaderData }: Route.ComponentProps) => {
+  const user = loaderData as User | null;
+
   return (
     <main className="dashboard wrapper">
       <Header
@@ -35,7 +41,7 @@ const dashboard = () => {
       </section>
       <section className="container">
         <h1 className="text-xl font-semibold text-dark-100">
-          Yok Bikin Trip Kita
+          Yok bikin trip kamu biar lebih berkesan
         </h1>
         <div className="trip-grid">
           {allTrips
@@ -53,7 +59,6 @@ const dashboard = () => {
             ))}
         </div>
       </section>
-      <TripCard />
     </main>
   );
 };
