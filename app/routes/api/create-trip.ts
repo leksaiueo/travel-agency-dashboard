@@ -78,7 +78,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const imageUrls = (await imageResponse.json()).results
       .slice(0, 3)
-      .map((result: any) => result.urls?.reguler || null);
+      .map((result: any) => result.urls?.regular || null);
 
     const result = await database.createDocument(
       appwriteConfig.databaseId,
@@ -94,6 +94,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     return data({ id: result.$id });
   } catch (e) {
-    console.error("Error generating travel plan: ", error);
+    console.error("Error generating travel plan: ", e);
   }
 };
