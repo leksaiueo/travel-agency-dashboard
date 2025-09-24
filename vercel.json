@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "framework": "vite",
+  "functions": {
+    "app/routes/api/*.ts": {
+      "runtime": "nodejs20.x"
+    }
+  },
+  "env": {
+    "GEMINI_API_KEY": "@gemini-api-key",
+    "UNSPLASH_ACCESS_KEY": "@unsplash-access-key"
+  }
+}

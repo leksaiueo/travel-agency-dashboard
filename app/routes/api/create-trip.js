@@ -1,35 +1,22 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { error } from "console";
-import { data, type ActionFunctionArgs } from "react-router";
+import { data } from "react-router";
 import { appwriteConfig, database } from "~/appwrite/client";
 import { parseMarkdownToJson } from "~/lib/utils";
 import { ID } from "appwrite";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  try {
-    const {
-      country,
-      numberOfDays,
-      travelStyle,
-      interests,
-      budget,
-      groupType,
-      userId,
-    } = await request.json();
-
-    // Validasi environment variables
-    if (!process.env.GEMINI_API_KEY) {
-      console.error("GEMINI_API_KEY is not set");
-      return data({ error: "AI service is not configured" }, { status: 500 });
-    }
-
-    if (!process.env.UNSPLASH_ACCESS_KEY) {
-      console.error("UNSPLASH_ACCESS_KEY is not set");
-      return data({ error: "Image service is not configured" }, { status: 500 });
-    }
-
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY;
+export const action = async ({ request }) => {
+  const {
+    country,
+    numberOfDays,
+    travelStyle,
+    interests,
+    budget,
+    groupType,
+    userId,
+  } = await request.json();
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY;
 
   try {
     const prompt = `Generate a ${numberOfDays}-day travel itinerary for ${country} based on the following user information:
@@ -91,7 +78,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const imageUrls = (await imageResponse.json()).results
       .slice(0, 3)
-      .map((result: any) => result.urls?.regular || null);
+      .map((result) => result.urls?.regular || null);
 
     const result = await database.createDocument(
       appwriteConfig.databaseId,
@@ -108,6 +95,5 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return data({ id: result.$id });
   } catch (error) {
     console.error("Error generating travel plan: ", error);
-    return data({ error: "Failed to generate travel plan" }, { status: 500 });
   }
 };
